@@ -18,6 +18,7 @@
 #include <4143pclpyramid.h>
 #include <pcl/common/time.h>
 #include <pcl/common/impl/angles.hpp>
+#include <pcl/conversions.h>
 
 
 class PclPyramid
@@ -329,11 +330,11 @@ class PclPyramid
         }
         else 
         {
-          pcd_cloud.reset (new sensor_msgs::PointCloud2);
+          pcd_cloud.reset (new pcl::PCLPointCloud2);
           if(pcd.read (filename_, *pcd_cloud, origin, orientation, version) < 0)
             cout << "file read failed" << endl;
           filecloud.reset (new Cloud);
-          pcl::fromROSMsg(*pcd_cloud, *filecloud);
+          pcl::fromPCLPointCloud2(*pcd_cloud, *filecloud);
           cloud_  = filecloud;
         }
 
@@ -378,7 +379,7 @@ class PclPyramid
   Eigen::Vector4f origin;
   Eigen::Quaternionf orientation;
   int version; 
-  sensor_msgs::PointCloud2::Ptr pcd_cloud;
+  pcl::PCLPointCloud2::Ptr pcd_cloud;
 
   std::string device_id_;
   std::string filename_;
